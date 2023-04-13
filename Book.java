@@ -23,13 +23,12 @@ class Book {
         int lastCommaIndex = 0;
 
         ArrayList<String> tokens = new ArrayList<>();
-
         for (int curIndex = 0; curIndex < line.length(); curIndex++) {
-            String curCharacter = line.substring(curIndex, curIndex+1);
+            String curCharacter = line.substring(curIndex, curIndex + 1);
             if (quoteMode == true) {
                 if (curCharacter.equals("\"")) { // closing quote
                     quoteMode = false;
-                    tokens.add(line.substring(lastCommaIndex+1, curIndex));
+                    tokens.add(line.substring(lastCommaIndex + 1, curIndex));
                     // assume there's a comma afterwards
                     curIndex++;
                     lastCommaIndex = curIndex;
@@ -39,7 +38,7 @@ class Book {
                     quoteMode = true;
                     lastCommaIndex = curIndex;
                 } else if (curCharacter.equals(",")) {
-                    tokens.add(line.substring(lastCommaIndex+1, curIndex));
+                    tokens.add(line.substring(lastCommaIndex + 1, curIndex));
                     lastCommaIndex = curIndex;
                 }
             }
@@ -47,10 +46,25 @@ class Book {
         return new Book(tokens.get(0), tokens.get(1), tokens.get(2));
     }
 
-
+    public int compareTo(Book other, int by) {
+        if (by == 0) {
+            String lastName1 = this.getLastName();
+            String lastName2 = other.getLastName();
+            return lastName1.compareTo(lastName2);
+        } else if (by == 1) {
+            String fistName1 = this.getFirstName();
+            String firstName2 = other.getFirstName();
+            return fistName1.compareTo(firstName2);
+        } else if (by == 2) {
+            String title1 = this.getTitle();
+            String title2 = other.getTitle();
+            return title1.compareTo(title2);
+        }
+        return 0;
+    }
 
     public String toString() {
-        return "\""+ title + "\"" + " by " + firstName + " " + lastName;
+        return "\"" + title + "\"" + " by " + firstName + " " + lastName;
     }
 
     public static int getBookCount() {

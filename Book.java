@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.concurrent.ArrayBlockingQueue;
 
-class Book {
+class Book implements Comparable<Book> {
     private String lastName;
     private String firstName;
     private String title;
@@ -47,21 +48,29 @@ class Book {
         return new Book(tokens.get(0), tokens.get(1), tokens.get(2));
     }
 
-    public int compareTo(Book other, int by) {
-        if (by == 0) {
-            String lastName1 = this.getLastName();
-            String lastName2 = other.getLastName();
-            return lastName1.compareTo(lastName2);
-        } else if (by == 1) {
-            String fistName1 = this.getFirstName();
-            String firstName2 = other.getFirstName();
-            return fistName1.compareTo(firstName2);
-        } else if (by == 2) {
-            String title1 = this.getTitle();
-            String title2 = other.getTitle();
-            return title1.compareTo(title2);
+    // public int compareTo(Book other, int by) {
+    //     if (by == 0) {
+    //         return this.getLastName().compareTo(other.getLastName());
+    //     } else if (by == 1) {
+    //         return this.getFirstName().compareTo(other.getFirstName());
+    //     } else if (by == 2) {
+    //         return this.getTitle().compareTo(other.getTitle());
+    //     }
+    //     return 0;
+    // }
+
+    public int compareTo(Book other) {
+        int compareResult = this.lastName.compareTo(other.lastName);
+        if (compareResult == 0) {
+            compareResult =  this.firstName.compareTo(other.firstName);
+            if (compareResult == 0) {
+                return this.title.compareTo(other.title);
+            } else {
+                return compareResult;
+            }
+        } else {
+            return compareResult;
         }
-        return 0;
     }
 
     public String toString() {
@@ -98,5 +107,12 @@ class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+}
+
+class FirstNameComparator implements Comparator<Book> {
+    public int compare(Book b1, Book b2)
+    {
+        return b1.getFirstName().compareTo(b2.getFirstName());
     }
 }

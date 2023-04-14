@@ -17,10 +17,11 @@ class Book {
 
     public static Book parseFromCsvString(String line) {
         line += ",";
+        
         // assume last, first, title
 
         boolean quoteMode = false;
-        int lastCommaIndex = 0;
+        int lastCommaIndex = -1;
 
         ArrayList<String> tokens = new ArrayList<>();
         for (int curIndex = 0; curIndex < line.length(); curIndex++) {
@@ -28,7 +29,7 @@ class Book {
             if (quoteMode == true) {
                 if (curCharacter.equals("\"")) { // closing quote
                     quoteMode = false;
-                    tokens.add(line.substring(lastCommaIndex + 1, curIndex));
+                    tokens.add(line.substring(lastCommaIndex +1, curIndex));
                     // assume there's a comma afterwards
                     curIndex++;
                     lastCommaIndex = curIndex;
@@ -38,7 +39,7 @@ class Book {
                     quoteMode = true;
                     lastCommaIndex = curIndex;
                 } else if (curCharacter.equals(",")) {
-                    tokens.add(line.substring(lastCommaIndex + 1, curIndex));
+                    tokens.add(line.substring(lastCommaIndex+1, curIndex));
                     lastCommaIndex = curIndex;
                 }
             }

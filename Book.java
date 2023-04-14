@@ -18,7 +18,7 @@ class Book implements Comparable<Book> {
 
     public static Book parseFromCsvString(String line) {
         line += ",";
-        
+
         // assume last, first, title
 
         boolean quoteMode = false;
@@ -30,7 +30,7 @@ class Book implements Comparable<Book> {
             if (quoteMode == true) {
                 if (curCharacter.equals("\"")) { // closing quote
                     quoteMode = false;
-                    tokens.add(line.substring(lastCommaIndex +1, curIndex));
+                    tokens.add(line.substring(lastCommaIndex + 1, curIndex));
                     // assume there's a comma afterwards
                     curIndex++;
                     lastCommaIndex = curIndex;
@@ -40,7 +40,7 @@ class Book implements Comparable<Book> {
                     quoteMode = true;
                     lastCommaIndex = curIndex;
                 } else if (curCharacter.equals(",")) {
-                    tokens.add(line.substring(lastCommaIndex+1, curIndex));
+                    tokens.add(line.substring(lastCommaIndex + 1, curIndex));
                     lastCommaIndex = curIndex;
                 }
             }
@@ -48,21 +48,10 @@ class Book implements Comparable<Book> {
         return new Book(tokens.get(0), tokens.get(1), tokens.get(2));
     }
 
-    // public int compareTo(Book other, int by) {
-    //     if (by == 0) {
-    //         return this.getLastName().compareTo(other.getLastName());
-    //     } else if (by == 1) {
-    //         return this.getFirstName().compareTo(other.getFirstName());
-    //     } else if (by == 2) {
-    //         return this.getTitle().compareTo(other.getTitle());
-    //     }
-    //     return 0;
-    // }
-
     public int compareTo(Book other) {
         int compareResult = this.lastName.compareTo(other.lastName);
         if (compareResult == 0) {
-            compareResult =  this.firstName.compareTo(other.firstName);
+            compareResult = this.firstName.compareTo(other.firstName);
             if (compareResult == 0) {
                 return this.title.compareTo(other.title);
             } else {
@@ -110,9 +99,20 @@ class Book implements Comparable<Book> {
     }
 }
 
-class FirstNameComparator implements Comparator<Book> {
-    public int compare(Book b1, Book b2)
-    {
+class ComparatorFirstName implements Comparator<Book> {
+    public int compare(Book b1, Book b2) {
         return b1.getFirstName().compareTo(b2.getFirstName());
+    }
+}
+
+class ComparatorLastName implements Comparator<Book> {
+    public int compare(Book b1, Book b2) {
+        return b1.getLastName().compareTo(b2.getLastName());
+    }
+}
+
+class ComparatorTitle implements Comparator<Book> {
+    public int compare(Book b1, Book b2) {
+        return b1.getTitle().compareTo(b2.getTitle());
     }
 }
